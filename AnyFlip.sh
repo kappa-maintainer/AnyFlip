@@ -16,8 +16,7 @@ URL="https://online.anyflip.com/${pathid}/files/mobile/"
 for (( COUNT=1; COUNT<pagecount; ++COUNT)); do
     wget "${URL}${COUNT}.jpg" --no-check-certificate
     sleep 1.5s
-    convert ${COUNT}.jpg ${COUNT}.pdf
     PDFS="${PDFS} ${COUNT}.pdf"
 done
-
-qpdf --empty --pages ${PDFS} -- combined.pdf
+rename 'unless (/0+[0-9]{3}.jpg/) {s/^([0-9]{1,2}\.jpg)$/00$1/g;s/0*([0-9]{3}\..*)/$1/}' *
+img2pdf *.jpg --auto-orient --output combined.pdf
